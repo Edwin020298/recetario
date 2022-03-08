@@ -1,13 +1,25 @@
-import React, {useState} from 'react';
-import './assets/css/App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, ModalBody, ModalHeader, ModalFooter} from 'reactstrap';
+import React, { useState } from "react";
+import "./assets/css/App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import Titulo from "./componentes/Titulo/Titulo";
-function App() {
 
+function App() {
   const dataPersonas = [
-    { id: 1, nombre: "pizza", calorias:"15", descripcion: "rico",ingredientes:"chorizo" },
-    { id: 2, nombre: "spaguetti", calorias:"20", descripcion: "saludable para dieta",ingredientes:"tomate" },
+    {
+      id: 1,
+      nombre: "pizza",
+      calorias: "266",
+      descripcion: " amasado con agua, sal, levadura y harina.",
+      ingredientes: "cebolla, champiñones",
+    },
+    {
+      id: 2,
+      nombre: "espagueti ",
+      calorias: "158",
+      descripcion: " pasta italiana elaborada con harina de grano duro y agua",
+      ingredientes: "mediacrema,tomate",
+    },
   ];
 
   const [data, setData] = useState(dataPersonas);
@@ -16,51 +28,49 @@ function App() {
   const [modalInsertar, setModalInsertar] = useState(false);
 
   const [personaSeleccionada, setPersonaSeleccionada] = useState({
-    id: '',
-    nombre: '',
-    calorias: '',
-    descripcion: '',
-    ingredientes: '',
+    id: "",
+    nombre: "",
+    calorias: "",
+    descripcion: "",
+    ingredientes: "",
   });
 
-  const seleccionarPersona=(elemento, caso)=>{
-setPersonaSeleccionada(elemento);
-(caso==='Editar')?setModalEditar(true):setModalEliminar(true)
-  }
+  const seleccionarPersona = (elemento, caso) => {
+    setPersonaSeleccionada(elemento);
+    caso === "Editar" ? setModalEditar(true) : setModalEliminar(true);
+  };
 
-  const handleChange=e=>{
-    const {name, value}=e.target;
-    setPersonaSeleccionada((prevState)=>({
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPersonaSeleccionada((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
-  }
+  };
 
-
-  const eliminar =()=>{
-    setData(data.filter(persona=>persona.id!==personaSeleccionada.id));
+  const eliminar = () => {
+    setData(data.filter((persona) => persona.id !== personaSeleccionada.id));
     setModalEliminar(false);
-  }
+  };
 
-  const abrirModalInsertar=()=>{
+  const abrirModalInsertar = () => {
     setPersonaSeleccionada(null);
     setModalInsertar(true);
-  }
+  };
 
-  const insertar =()=>{
-    var valorInsertar=personaSeleccionada;
-    valorInsertar.id=data[data.length-1].id+1;
+  const insertar = () => {
+    var valorInsertar = personaSeleccionada;
+    valorInsertar.id = data[data.length - 1].id + 1;
     var dataNueva = data;
     dataNueva.push(valorInsertar);
     setData(dataNueva);
     setModalInsertar(false);
-  }
+  };
 
   return (
-     
     <div className="App">
       <header>
-      <Titulo logotitu={Titulo.receta} />
+        <Titulo logotitu={Titulo.receta} />
       </header>
       <br />
 
@@ -75,44 +85,51 @@ setPersonaSeleccionada(elemento);
               <th>ingredientes</th>
             </tr>
           </thead>
-          
+
           <tbody>
-            {data.map(elemento=>(
+            {data.map((elemento) => (
               <tr>
                 <td>{elemento.id}</td>
                 <td>{elemento.nombre}</td>
                 <td>{elemento.calorias}</td>
                 <td>{elemento.descripcion}</td>
                 <td>{elemento.ingredientes}</td>
-                <td> <button className="btn btn-danger" onClick={()=>seleccionarPersona(elemento, 'Eliminar')}>Eliminar</button></td>
+                <td>
+                  {" "}
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => seleccionarPersona(elemento, "Eliminar")}
+                  >
+                    Eliminar
+                  </button>
+                </td>
               </tr>
-            ))
-            }
+            ))}
           </tbody>
         </table>
       </div>
 
       <Modal isOpen={modalEliminar}>
         <ModalBody>
-          Estás Seguro que Deseas Eliminar la receta {personaSeleccionada && personaSeleccionada.nombre}
+          Estás Seguro que Deseas Eliminar la receta{" "}
+          {personaSeleccionada && personaSeleccionada.nombre}
         </ModalBody>
 
         <ModalFooter>
-          <button className="btn btn-danger" onClick={()=>eliminar()}>
+          <button className="btn btn-danger" onClick={() => eliminar()}>
             Sí
           </button>
 
           <button
             className="btn btn-secondary"
-            onClick={()=>setModalEliminar(false)}
+            onClick={() => setModalEliminar(false)}
           >
             No
           </button>
         </ModalFooter>
       </Modal>
 
-
-        <Modal isOpen={modalInsertar}>
+      <Modal isOpen={modalInsertar}>
         <ModalHeader>
           <div>
             <h3>Insertar receta</h3>
@@ -126,7 +143,7 @@ setPersonaSeleccionada(elemento);
               readOnly
               type="text"
               name="id"
-              value={data[data.length-1].id+1}
+              value={data[data.length - 1].id + 1}
             />
             <br />
 
@@ -135,7 +152,7 @@ setPersonaSeleccionada(elemento);
               className="form-control"
               type="text"
               name="nombre"
-              value={personaSeleccionada ? personaSeleccionada.nombre: ''}
+              value={personaSeleccionada ? personaSeleccionada.nombre : ""}
               onChange={handleChange}
             />
             <br />
@@ -145,17 +162,17 @@ setPersonaSeleccionada(elemento);
               className="form-control"
               type="text"
               name="calorias"
-              value={personaSeleccionada ? personaSeleccionada.calorias: ''}
+              value={personaSeleccionada ? personaSeleccionada.calorias : ""}
               onChange={handleChange}
             />
-            <br />            
+            <br />
 
             <label>Descripcion</label>
             <input
               className="form-control"
               type="text"
               name="descripcion"
-              value={personaSeleccionada ? personaSeleccionada.descripcion: ''}
+              value={personaSeleccionada ? personaSeleccionada.descripcion : ""}
               onChange={handleChange}
             />
             <br />
@@ -164,36 +181,35 @@ setPersonaSeleccionada(elemento);
               className="form-control"
               type="text"
               name="ingredientes"
-              value={personaSeleccionada ? personaSeleccionada.ingredientes: ''}
+              value={
+                personaSeleccionada ? personaSeleccionada.ingredientes : ""
+              }
               onChange={handleChange}
             />
-            <br />            
-
+            <br />
           </div>
         </ModalBody>
-        
-        <ModalFooter>
 
-          <button className="btn btn-primary"
-          onClick={()=>insertar()}>
+        <ModalFooter>
+          <button className="btn btn-primary" onClick={() => insertar()}>
             Insertar
           </button>
-          
+
           <button
             className="btn btn-danger"
-            onClick={()=>setModalInsertar(false)}
+            onClick={() => setModalInsertar(false)}
           >
             Cancelar
           </button>
-
         </ModalFooter>
       </Modal>
 
-      <button className="btn btn-success" onClick={()=>abrirModalInsertar()}>Nueva Receta</button>
-      <br /><br />
-
+      <button className="btn btn-success" onClick={() => abrirModalInsertar()}>
+        Nueva Receta
+      </button>
+      <br />
+      <br />
     </div>
   );
 }
-
 export default App;
