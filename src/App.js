@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import Titulo from "./componentes/Titulo/Titulo";
 
 function App() {
-  const dataPersonas = [
+  const initialState = [
     {
       id: 1,
       nombre: "pizza",
@@ -22,10 +22,13 @@ function App() {
     },
   ];
 
-  const [data, setData] = useState(dataPersonas);
+  const [data, setData] = useState(initialState);
   const [setModalEditar] = useState(false);
   const [modalEliminar, setModalEliminar] = useState(false);
   const [modalInsertar, setModalInsertar] = useState(false);
+
+  const var1 = 0;
+  const algo = data[var1]?.id;
 
   const [personaSeleccionada, setPersonaSeleccionada] = useState({
     id: "",
@@ -60,13 +63,12 @@ function App() {
 
   const insertar = () => {
     var valorInsertar = personaSeleccionada;
-    valorInsertar.id = data[data.length - 1].id + 1;
+    valorInsertar.id = data.length + 1;
     var dataNueva = data;
     dataNueva.push(valorInsertar);
     setData(dataNueva);
     setModalInsertar(false);
   };
-
   return (
     <div className="App">
       <header>
@@ -87,8 +89,8 @@ function App() {
           </thead>
 
           <tbody>
-            {data.map((elemento) => (
-              <tr>
+            {data.map((elemento, key) => (
+              <tr key={key}>
                 <td>{elemento.id}</td>
                 <td>{elemento.nombre}</td>
                 <td>{elemento.calorias}</td>
@@ -143,7 +145,7 @@ function App() {
               readOnly
               type="text"
               name="id"
-              value={data[data.length - 1].id + 1}
+              value={data.length + 1}
             />
             <br />
 
