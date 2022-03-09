@@ -4,32 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import Titulo from "./componentes/Titulo/Titulo";
 import ConfirmationModal from "./componentes/ConfirmationModal/ConfirmationModal";
+import { initialStateRecetario } from "./constants/constans";
 function App() {
-  const initialState = [
-    {
-      id: 1,
-      nombre: "pizza",
-      calorias: "266",
-      descripcion: " amasado con agua, sal, levadura y harina.",
-      ingredientes: "cebolla, champiñones",
-    },
-    {
-      id: 2,
-      nombre: "espagueti ",
-      calorias: "158",
-      descripcion: " pasta italiana elaborada con harina de grano duro y agua",
-      ingredientes: "mediacrema,tomate",
-    },
-  ];
-
-  const [data, setData] = useState(initialState);
+  const [data, setData] = useState(initialStateRecetario);
   const [setModalEditar] = useState(false);
   const [modalEliminar, setModalEliminar] = useState(false);
   const [modalInsertar, setModalInsertar] = useState(false);
-
-  const var1 = 0;
-  const algo = data[var1]?.id;
-
   const [personaSeleccionada, setPersonaSeleccionada] = useState({
     id: "",
     nombre: "",
@@ -61,8 +41,8 @@ function App() {
     setModalInsertar(true);
   };
 
-  const insertar = e => {
-    e.preventDefault()
+  const insertar = (e) => {
+    e.preventDefault();
     var valorInsertar = personaSeleccionada;
     valorInsertar.id = data.length + 1;
     var dataNueva = data;
