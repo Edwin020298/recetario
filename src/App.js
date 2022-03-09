@@ -3,7 +3,7 @@ import "./assets/css/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import Titulo from "./componentes/Titulo/Titulo";
-
+import ConfirmationModal from "./componentes/ConfirmationModal/ConfirmationModal";
 function App() {
   const initialState = [
     {
@@ -38,7 +38,7 @@ function App() {
     ingredientes: "",
   });
 
-  const seleccionarPersona = (elemento, caso) => {
+  const removerReceta = (elemento, caso) => {
     setPersonaSeleccionada(elemento);
     caso === "Editar" ? setModalEditar(true) : setModalEliminar(true);
   };
@@ -61,7 +61,8 @@ function App() {
     setModalInsertar(true);
   };
 
-  const insertar = () => {
+  const insertar = e => {
+    e.preventDefault()
     var valorInsertar = personaSeleccionada;
     valorInsertar.id = data.length + 1;
     var dataNueva = data;
@@ -100,7 +101,7 @@ function App() {
                   {" "}
                   <button
                     className="btn btn-danger"
-                    onClick={() => seleccionarPersona(elemento, "Eliminar")}
+                    onClick={() => removerReceta(elemento, "Eliminar")}
                   >
                     Eliminar
                   </button>
@@ -111,25 +112,12 @@ function App() {
         </table>
       </div>
 
-      <Modal isOpen={modalEliminar}>
-        <ModalBody>
-          Estás Seguro que Deseas Eliminar la receta{" "}
-          {personaSeleccionada && personaSeleccionada.nombre}
-        </ModalBody>
-
-        <ModalFooter>
-          <button className="btn btn-danger" onClick={() => eliminar()}>
-            Sí
-          </button>
-
-          <button
-            className="btn btn-secondary"
-            onClick={() => setModalEliminar(false)}
-          >
-            No
-          </button>
-        </ModalFooter>
-      </Modal>
+      <ConfirmationModal
+        personaSeleccionada={personaSeleccionada}
+        modalEliminar={modalEliminar}
+        setModalEliminar={setModalEliminar}
+        eliminar={eliminar}
+      />
 
       <Modal isOpen={modalInsertar}>
         <ModalHeader>
@@ -137,8 +125,8 @@ function App() {
             <h3>Insertar receta</h3>
           </div>
         </ModalHeader>
-        <ModalBody>
-          <div className="form-group">
+        <form onSubmit={insertar} className="form-group">
+          <ModalBody>
             <label>ID</label>
             <input
               className="form-control"
@@ -146,6 +134,7 @@ function App() {
               type="text"
               name="id"
               value={data.length + 1}
+              required
             />
             <br />
 
@@ -156,6 +145,7 @@ function App() {
               name="nombre"
               value={personaSeleccionada ? personaSeleccionada.nombre : ""}
               onChange={handleChange}
+              required
             />
             <br />
 
@@ -166,6 +156,7 @@ function App() {
               name="calorias"
               value={personaSeleccionada ? personaSeleccionada.calorias : ""}
               onChange={handleChange}
+              required
             />
             <br />
 
@@ -176,6 +167,7 @@ function App() {
               name="descripcion"
               value={personaSeleccionada ? personaSeleccionada.descripcion : ""}
               onChange={handleChange}
+              required
             />
             <br />
             <label>ingredientes</label>
@@ -187,23 +179,25 @@ function App() {
                 personaSeleccionada ? personaSeleccionada.ingredientes : ""
               }
               onChange={handleChange}
+              required
             />
             <br />
-          </div>
-        </ModalBody>
+          </ModalBody>
 
-        <ModalFooter>
-          <button className="btn btn-primary" onClick={() => insertar()}>
-            Insertar
-          </button>
+          <ModalFooter>
+            <button type="submit" className="btn btn-primary">
+              Insertar
+            </button>
 
-          <button
-            className="btn btn-danger"
-            onClick={() => setModalInsertar(false)}
-          >
-            Cancelar
-          </button>
-        </ModalFooter>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={(_) => setModalInsertar(false)}
+            >
+              Cancelar
+            </button>
+          </ModalFooter>
+        </form>
       </Modal>
 
       <button className="btn btn-success" onClick={() => abrirModalInsertar()}>
