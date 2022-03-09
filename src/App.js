@@ -52,10 +52,7 @@ function App() {
   };
   return (
     <div className="App">
-      <header>
-        <Titulo logotitu={Titulo.receta} />
-      </header>
-      <br />
+      <Titulo />
 
       <div id="main-container">
         <table className="table table-bordered">
